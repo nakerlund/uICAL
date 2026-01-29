@@ -9,6 +9,7 @@
 #else
     #include <stdlib.h>
     #include <string.h>
+    #include <stdio.h>
     #include <string>
     #include <sstream>
     #include <iostream>

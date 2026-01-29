@@ -48,6 +48,8 @@ namespace uICAL {
             bool operator <= (const DateTime& dt) const;
             bool operator == (const DateTime& dt) const;
 
+            const EpochTime& get_epochtime() const { return epochtime; }
+
             TZ_ptr tz;
 
         protected:
