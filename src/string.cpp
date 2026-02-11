@@ -5,16 +5,19 @@
 #include "uICAL/stream.h"
 #include "uICAL/string.h"
 #include "uICAL/error.h"
+#include "uICAL/logging.h"
 
 namespace uICAL {
     const char* endl = "\n";
     const char* fmt_04d = "%04d";
     const char* fmt_02d = "%02d";
 
-    static string EMPTY = string();
-
+    /* CRITICAL FIX: Use placement new with static storage to avoid heap allocation
+     * at program startup. This prevents crashes on embedded systems with limited heap. */
     const string& string::none() {
-        return EMPTY;
+        static char storage[sizeof(string)] __attribute__((aligned(__alignof__(string))));
+        static string* EMPTY_PTR = new(storage) string();
+        return *EMPTY_PTR;
     }
 
     void string::tokenize(char delim, std::function<void (string)> cb) const {
@@ -64,7 +67,7 @@ namespace uICAL {
 
         void string::rtrim() {
             this->erase(std::find_if(this->rbegin(), this->rend(), [](int ch) {
-                return !std::isspace(ch);
+                return !std::isspace(static_cast<unsigned char>(ch));
             }).base(), this->end());
         }
 
