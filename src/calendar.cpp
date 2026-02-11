@@ -77,6 +77,10 @@ namespace uICAL {
         }
 
         Calendar_ptr cal = new_ptr<Calendar>();
+        /* Restore pre-allocation to reduce heap churn on large calendars.
+         * This was present in the pre-submodule version and helps avoid
+         * allocator fragmentation/crashes during massive event loads. */
+        cal->events.reserve(16000);
 
         for (;;) {
             auto child = stm.nextObject(true);
