@@ -31,7 +31,6 @@ namespace uICAL {
     }
 
     bool RRuleIter::start() {
-        log_debug("RRuleIter::start begin");
         if (this->range_end.valid() && this->rr->dtstart > this->range_end)  {
             return false;
         }
@@ -67,7 +66,6 @@ namespace uICAL {
                 }
             }
         }
-        log_debug("RRuleIter::start done");
         return true;
     }
 

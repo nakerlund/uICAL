@@ -28,7 +28,6 @@ namespace uICAL {
     {}
 
     string VObjectStream::nextObjectName() {
-        log_debug("VObjectStream::nextObjectName enter");
         VLine_ptr line = this->stm.next();
 
         if (!line) {
@@ -36,24 +35,14 @@ namespace uICAL {
             throw ParseError(string("Parse error, empty stream"));
         }
         if (line->name == "END") {
-            log_debug("VObjectStream::nextObjectName final: name=%s value=%s (name_len=%u value_len=%u)",
-                      line->name.c_str(),
-                      line->value.c_str(),
-                      (unsigned)line->name.size(),
-                      (unsigned)line->value.size());
-            log_debug("VObjectStream::nextObjectName calling string::none()");
-            const string& empty_ref = string::none();
-            log_debug("VObjectStream::nextObjectName string::none() returned, size=%zu", empty_ref.size());
-            return empty_ref;
+            return string::none();
         }
         if (line->name != "BEGIN") {
             log_error("Parse error, expected BEGIN: %s", line->as_str().c_str());
             throw ParseError(string("Parse error, expected BEGIN: ") + line->as_str());
         }
 
-        log_debug("VObjectStream::nextObjectName begin: %s (value_len=%u)",
-                  line->value.c_str(),
-                  (unsigned)line->value.size());
+        log_trace("Component BEGIN: %s", line->value.c_str());
         return line->value;
     }
 
@@ -109,11 +98,7 @@ namespace uICAL {
     VObject_ptr VObjectStream::nextObject(bool recurse) {
         while(true) {
             string objName = this->nextObjectName();
-            log_debug("VObjectStream::nextObject got name: %s (len=%u)",
-                      objName.c_str(),
-                      (unsigned)objName.size());
             if (objName.empty()) {
-                log_debug("VObjectStream::nextObject end (no more objects)");
                 return nullptr;
             }
             VObject_ptr obj = nullptr;

@@ -21,7 +21,7 @@ namespace uICAL {
     CalendarIter::CalendarIter(const Calendar_ptr cal, const DateTime& begin, const DateTime& end)
     : cal(cal)
     {
-        log_debug("CalendarIter::CalendarIter start (events=%u)", (unsigned)this->cal->events.size());
+
         if (begin.valid() && end.valid() && end < begin) {
             log_error("Begin and end describe a negative range: %s -> %s", begin.as_str().c_str(), end.as_str().c_str());
             throw ValueError("Begin and end describe a negative range");
@@ -34,12 +34,10 @@ namespace uICAL {
                 this->events.push_back(evIt);
             }
         }
-        log_debug("CalendarIter::CalendarIter done (active=%u)", (unsigned)this->events.size());
     }
 
     bool CalendarIter::next() {
         if (this->events.size() == 0) {
-            log_trace("CalendarIter::next no events");
             return false;
         }
 
@@ -50,7 +48,6 @@ namespace uICAL {
         if (! (*minIt)->next()) {
             this->events.erase(minIt);
         }
-        log_trace("CalendarIter::next ok (remaining=%u)", (unsigned)this->events.size());
         return true;
     }
 
