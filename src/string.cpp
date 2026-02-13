@@ -64,7 +64,7 @@ namespace uICAL {
 
         void string::rtrim() {
             this->erase(std::find_if(this->rbegin(), this->rend(), [](int ch) {
-                return !std::isspace(ch);
+                return !std::isspace(static_cast<unsigned char>(ch));
             }).base(), this->end());
         }
 
