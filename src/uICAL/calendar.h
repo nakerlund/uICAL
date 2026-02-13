@@ -7,6 +7,12 @@
 #include "uICAL/base.h"
 
 namespace uICAL {
+    // Initial capacity for event vector to reduce reallocations on large calendars.
+    // Can be overridden at compile time: -DUICAL_CALENDAR_INITIAL_CAPACITY=500
+    #ifndef UICAL_CALENDAR_INITIAL_CAPACITY
+    #define UICAL_CALENDAR_INITIAL_CAPACITY 16000
+    #endif
+
     class Calendar : public Base {
         public:
             Calendar();
