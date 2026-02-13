@@ -72,6 +72,9 @@ namespace uICAL {
 
         Calendar_ptr cal = new_ptr<Calendar>();
 
+        // Pre-allocation to reduce heap churn on large calendars.
+        cal->events.reserve(UICAL_CALENDAR_INITIAL_CAPACITY);
+
         for (;;) {
             auto child = stm.nextObject(true);
             if (child == nullptr) {

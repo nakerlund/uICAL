@@ -41,7 +41,7 @@ namespace uICAL {
                 string nextLine;
                 char nextChar = this->ical.peek();
 
-                if (!std::isspace(nextChar)) {
+                if (!std::isspace(static_cast<unsigned char>(nextChar))) {
                     break;
                 }
 
