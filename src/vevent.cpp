@@ -42,7 +42,7 @@ namespace uICAL {
         this->uid = uid ? uid->value : string();
 
         if (rRule == nullptr) {
-            this->rrule = new_ptr<RRule>(string::none(), this->start);
+            this->rrule = new_ptr<RRule>(string(), this->start);
         } else {
             this->rrule = new_ptr<RRule>(rRule->value, this->start);
         }

@@ -69,14 +69,12 @@ namespace uICAL {
         : stm(stm)
         {}
 
-        char istream_Stream::peek() const {
-            int ch = this->stm.peek();
-            return ch;
+        int istream_Stream::peek() const {
+            return this->stm.peek();
         }
 
-        char istream_Stream::get() {
-            int ch = this->stm.read();
-            return ch;
+        int istream_Stream::get() {
+            return this->stm.read();
         }
 
         bool istream_Stream::readuntil(string& st, char delim) {
@@ -97,11 +95,17 @@ namespace uICAL {
         , pos(0)
         {}
 
-        char istream_String::peek() const {
+        int istream_String::peek() const {
+            if (this->pos >= this->st.length()) {
+                return std::char_traits<char>::eof();
+            }
             return this->st.charAt(this->pos);
         }
 
-        char istream_String::get() {
+        int istream_String::get() {
+            if (this->pos >= this->st.length()) {
+                return std::char_traits<char>::eof();
+            }
             return this->st.charAt(this->pos++);
         }
 
@@ -128,11 +132,11 @@ namespace uICAL {
         : istm(istm)
         {}
 
-        char istream_stl::peek() const {
+        int istream_stl::peek() const {
             return this->istm.peek();
         }
 
-        char istream_stl::get() {
+        int istream_stl::get() {
             return this->istm.get();
         }
 

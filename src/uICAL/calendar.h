@@ -25,6 +25,7 @@ namespace uICAL {
             static Calendar_ptr load(istream& ical, TZMap_ptr& tzmap, eventP_t addEvent);
 
             void addEvent(const VEvent_ptr &);
+            size_t eventCount() const { return events.size(); }
 
             void str(ostream& out) const;
 
