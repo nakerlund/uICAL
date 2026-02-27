@@ -39,8 +39,8 @@ namespace uICAL {
         public:
             virtual ~istream() = default;
 
-            virtual char peek() const = 0;
-            virtual char get() = 0;
+            virtual int peek() const = 0;
+            virtual int get() = 0;
 
             virtual bool readuntil(string& st, char delim, size_t maxLen = 0) = 0;
         protected:
@@ -52,8 +52,8 @@ namespace uICAL {
             public:
                 istream_Stream(Stream& istm);
 
-                char peek() const;
-                char get();
+                int peek() const;
+                int get();
 
                 bool readuntil(string& st, char delim, size_t maxLen = 0);
 
@@ -65,8 +65,8 @@ namespace uICAL {
             public:
                 istream_String(const String& st);
 
-                char peek() const;
-                char get();
+                int peek() const;
+                int get();
 
                 bool readuntil(string& st, char delim, size_t maxLen = 0);
 
@@ -81,8 +81,8 @@ namespace uICAL {
             public:
                 istream_stl(std::istream& istm);
 
-                char peek() const;
-                char get();
+                int peek() const;
+                int get();
 
                 bool readuntil(string& st, char delim, size_t maxLen = 0);
 

@@ -36,7 +36,7 @@ namespace uICAL {
         }
         if (line->name == "END") {
             log_trace("Final component: %s", line->as_str().c_str());
-            return string::none();
+            return string();
         }
         if (line->name != "BEGIN") {
             log_error("Parse error, expected BEGIN: %s", line->as_str().c_str());
@@ -48,18 +48,23 @@ namespace uICAL {
     }
 
     void VObjectStream::loadObject(string objName, VObject_ptr& obj, bool recurse) {
+        int line_count = 0;
         while(true) {
             VLine_ptr line = this->stm.next();
             if (!line) {
                 log_error("%s", "Parse error, unexpected end of ICAL");
                 throw ParseError("Parse error, unexpected end of ICAL");
             }
+            line_count++;
+            if (line_count > 5000) {
+                throw ParseError(string("loadObject exceeded 5000 lines for: ") + objName);
+            }
             if (line->name == "BEGIN") {
                 stm.repeatLine();
                 if (recurse || obj == nullptr) {
                     string childName = this->nextObjectName();
                     VObject_ptr child = nullptr;
-                    if (this->useLine(childName, string::none())) {
+                    if (this->useLine(childName, string())) {
                         child = new_ptr<VObject>();
                         child->name = childName;
                         log_trace("Use component: %s", childName.c_str());

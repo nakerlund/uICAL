@@ -37,18 +37,25 @@ namespace uICAL {
         }
 
         if (hasLine) {
-            while (this->ical.peek() != std::char_traits<char>::eof()) {
-                string nextLine;
-                char nextChar = this->ical.peek();
+            int peek_val = this->ical.peek();
+            int loop_count = 0;
+            while (peek_val != std::char_traits<char>::eof()) {
+                char nextChar = (char)peek_val;
 
                 if (!std::isspace(static_cast<unsigned char>(nextChar))) {
                     break;
                 }
 
+                string nextLine;
                 if (nextLine.readfrom(this->ical, '\n')) {
                     nextLine.rtrim();
                     completeLine += nextLine.substr(1);
                 }
+                loop_count++;
+                if (loop_count > 1000) {
+                    break;
+                }
+                peek_val = this->ical.peek();
             }
 
             this->currentLine = new_ptr<VLine>(completeLine);
