@@ -278,17 +278,17 @@ TEST_CASE("RRULE::negative_end", "[uICAL][RRule]") {
     REQUIRE(rruleIt.next() == false);
 }
 
-// TEST_CASE("RRULE::until_before_begin", "[uICAL][RRule]") {
-//     uICAL::string dtstart("19970902T090000");
-//     uICAL::string begin("19971102T090000");
-//     uICAL::string end("19971130T090000");
+TEST_CASE("RRULE::until_before_begin", "[uICAL][RRule]") {
+    uICAL::string dtstart("19970902T090000");
+    uICAL::string begin("19971102T090000");
+    uICAL::string end("19971130T090000");
 
-//     auto rruleIt = uICAL::RRuleIter(uICAL::new_ptr<uICAL::RRule>("FREQ=DAILY;WKST=MO;UNTIL=19970930T090000",
-//                                                                  uICAL::DateTime(dtstart)),
-//                                     uICAL::DateTime(begin),
-//                                     uICAL::DateTime(end));
-//     REQUIRE(rruleIt.next() == false);
-// }
+    auto rruleIt = uICAL::RRuleIter(uICAL::new_ptr<uICAL::RRule>("FREQ=DAILY;WKST=MO;UNTIL=19970930T090000",
+                                                                 uICAL::DateTime(dtstart)),
+                                    uICAL::DateTime(begin),
+                                    uICAL::DateTime(end));
+    REQUIRE(rruleIt.next() == false);
+}
 
 TEST_CASE("RRULE::done_before_begin", "[uICAL][RRule]") {
     uICAL::string dtstart("19970902T090000");

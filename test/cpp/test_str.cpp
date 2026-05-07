@@ -79,6 +79,7 @@ TEST_CASE("STR::obj", "[uICAL][STR]") {
 
         REQUIRE(event->as_str() ==
             "VEVENT: Irrigation Beds\n"
+            " - uid: \n"
             " - start: 20190917T103000EST\n"
             " - end: 20190917T104000EST\n"
             " - rrule: RRULE:FREQ=MONTHLY;INTERVAL=1;WKST=MO;UNTIL=20201231T215959Z;BYMONTHDAY=17\n"

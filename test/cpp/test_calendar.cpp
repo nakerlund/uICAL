@@ -13,11 +13,11 @@ class istream_mock_buggy : public uICAL::istream {
 public:
     istream_mock_buggy(std::istream& istm) : istm(istm) {}
 
-    char peek() const override {
+    int peek() const override {
         return istm.peek();
     }
 
-    char get() override {
+    int get() override {
         return istm.get();
     }
 
@@ -55,11 +55,11 @@ class istream_mock_fixed : public uICAL::istream {
 public:
     istream_mock_fixed(std::istream& istm) : istm(istm) {}
 
-    char peek() const override {
+    int peek() const override {
         return istm.peek();
     }
 
-    char get() override {
+    int get() override {
         return istm.get();
     }
 
@@ -119,18 +119,21 @@ TEST_CASE("Calendar::basic", "[uICAL][Calendar]") {
 
     REQUIRE(next() ==
         "Calendar EVENT: Irrigation Front\n"
+        " - uid: \n"
         " - start: 20191017T100000EST\n"
         " - span: PT20M\n"
     );
 
     REQUIRE(next() ==
         "Calendar EVENT: Irrigation Back\n"
+        " - uid: \n"
         " - start: 20191017T102000EST\n"
         " - span: PT5M\n"
     );
 
     REQUIRE(next() ==
         "Calendar EVENT: Irrigation Beds\n"
+        " - uid: \n"
         " - start: 20191017T103000EST\n"
         " - span: PT10M\n"
     );
@@ -177,6 +180,7 @@ TEST_CASE("Calendar::folding", "[uICAL][Calendar]") {
 
     REQUIRE(next() ==
             "Calendar EVENT: This is a short line that is folded.\n"
+            " - uid: \n"
             " - start: 20191017T102000EST\n"
             " - span: PT5M\n");
 
@@ -185,6 +189,7 @@ TEST_CASE("Calendar::folding", "[uICAL][Calendar]") {
             "longer than 75 characters. "
             "https://icalendar.org/iCalendar-RFC-5545/3-1-content-lines.html "
             "states that lines longer than 75 characters should be folded.\n"
+            " - uid: \n"
             " - start: 20191017T103000EST\n"
             " - span: PT10M\n");
 
