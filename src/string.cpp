@@ -52,7 +52,9 @@ namespace uICAL {
         }
 
         void string::rtrim() {
-            this->trim();
+            while (!this->empty() && std::isspace(this->charAt(this->length() - 1))) {
+                this->remove(this->length() - 1);
+            }
         }
 
     #else
