@@ -43,6 +43,20 @@ SimpleConfigWiFiAP::item_t config_ap_items[] {
             return !v.isEmpty();
         }
     },
+    { "netadv_enable", "Enable Advanced Networks (0/1)", "4em", 1, false, [](String& v){
+            if (v.isEmpty()) { return true; }
+            return v == "0" || v == "1";
+        }
+    },
+    { "preferred_networks", "Preferred Networks (CSV)", "30em", config_ap.value_max_length, false, [](String& v){
+            return true;
+        }
+    },
+    { "net_recovery", "Network Recovery (s)", "4em", 6, false, [](String& v){
+            if (v.isEmpty()) { return true; }
+            return v.toInt() >= 5;
+        }
+    },
     { "icalurl", "Calendar ICAL URL", "40em", config_ap.value_max_length, false, [](String& v){
             return !v.isEmpty();
         }
