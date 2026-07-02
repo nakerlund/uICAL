@@ -72,8 +72,6 @@ ButtonMonitor g_button(device_config.push_button_pin);
 LedFlash g_led(device_config.status_led_pin);
 unsigned g_configMillis;
 unsigned g_manualOnUntil;
-unsigned g_wifiConnectMillis;
-bool g_wifiUsePreferred;
 
 /*---------------------------------------------------------------------------*/
 unsigned get_unix_timestamp() {
@@ -141,37 +139,6 @@ void setup_io_pins() {
 }
 
 /*---------------------------------------------------------------------------*/
-bool advanced_networks_enabled() {
-    String enabled = g_config.getConfig("netadv_enable");
-    enabled.toLowerCase();
-    return enabled == "1" || enabled == "true" || enabled == "yes" || enabled == "on";
-}
-
-/*---------------------------------------------------------------------------*/
-String preferred_network() {
-    String preferred = g_config.getConfig("preferred_networks");
-    int split = preferred.indexOf(',');
-    if (split >= 0) {
-        preferred = preferred.substring(0, split);
-    }
-    preferred.trim();
-    return preferred;
-}
-
-/*---------------------------------------------------------------------------*/
-unsigned network_recovery_seconds() {
-    String configured = g_config.getConfig("net_recovery");
-    if (configured.isEmpty()) {
-        return 60;
-    }
-    unsigned seconds = configured.toInt();
-    if (seconds < 5) {
-        return 60;
-    }
-    return seconds;
-}
-
-/*---------------------------------------------------------------------------*/
 void config_relay() {
     g_relay.config(g_config.getConfig("icalurl"),
                    g_config.getConfig("poll").toInt(),
@@ -194,8 +161,6 @@ void setup() {
     SPIFFS.begin();
 
     g_manualOnUntil = 0;
-    g_wifiConnectMillis = 0;
-    g_wifiUsePreferred = true;
     g_loopMode = WIFI_INIT;
 }
 
@@ -223,10 +188,6 @@ void loop() {
             WiFi.disconnect();
             {
                 String ssid = g_config.getConfig("wifissid");
-                String preferred = preferred_network();
-                if (advanced_networks_enabled() && !preferred.isEmpty() && g_wifiUsePreferred) {
-                    ssid = preferred;
-                }
                 if (ssid.isEmpty()) {
                     g_loopMode = CONFIG_INIT;
                     break;
@@ -240,27 +201,15 @@ void loop() {
 
                 WiFi.begin(ssid.c_str(), g_config.getConfig("wifipass").c_str());
             }
-            g_wifiConnectMillis = millis();
             g_led.flash(300, 1700);
             g_loopMode = WIFI_SETUP;
             break;
 
         case WIFI_SETUP:
             if (WiFi.isConnected() == false) {
-                if (advanced_networks_enabled()) {
-                    unsigned elapsed = (millis() - g_wifiConnectMillis) / 1000;
-                    if (elapsed >= network_recovery_seconds()) {
-                        String preferred = preferred_network();
-                        if (!preferred.isEmpty() && preferred != g_config.getConfig("wifissid")) {
-                            g_wifiUsePreferred = !g_wifiUsePreferred;
-                        }
-                        g_loopMode = WIFI_INIT;
-                    }
-                }
                 break;
             }
             LOG(String("WIFI Connected [") + WiFi.localIP().toString() + "]");
-            g_wifiUsePreferred = true;
             g_led.state(false);
             g_loopMode = NTP_INIT;
             break;

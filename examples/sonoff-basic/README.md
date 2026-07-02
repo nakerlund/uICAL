@@ -67,9 +67,6 @@ Connect your laptop/phone/tablet to the `OnlineTimeswitch-?????????` WiFi hotspo
 Enter:
 * WiFi Name
 * WiFi Password
-* Enable Advanced Networks (0/1) - optional. Set to `1` to enable preferred-network and recovery behaviour.
-* Preferred Networks (CSV) - optional. First entry is preferred over WiFi Name while advanced mode is enabled.
-* Network Recovery (s) - optional. Retry period before reconnect/fallback when WiFi setup cannot connect (minimum 5s, default 60s).
 * ICAL URL - link to your online ICAL format calendar
 * Host Fingerprint - can be left blank. See below if you wish to set it.
 * Poll Period - how often you want the timeswitch check for changes in your calendar. 3600 seconds is a good default.
