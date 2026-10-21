@@ -8,7 +8,7 @@
     //#include <Arduino.h>
     #include <WString.h>
     #include <Stream.h>
-#else
+#elif !defined(UICAL_NO_STL_IO)
     #include <istream>
 #endif
 
@@ -75,7 +75,7 @@ namespace uICAL {
                 size_t pos;
         };
 
-    #else
+    #elif !defined(UICAL_NO_STL_IO)
 
         class istream_stl : public istream {
             public:

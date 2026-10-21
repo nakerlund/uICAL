@@ -148,7 +148,7 @@ namespace uICAL {
             return true;
         }
 
-    #else
+    #elif !defined(UICAL_NO_STL_IO)
 
         istream_stl::istream_stl(std::istream& istm)
         : istm(istm)

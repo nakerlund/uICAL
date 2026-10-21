@@ -10,8 +10,10 @@
     #include <stdlib.h>
     #include <string.h>
     #include <string>
-    #include <sstream>
-    #include <iostream>
+    #ifndef UICAL_NO_STL_IO
+        #include <sstream>
+        #include <iostream>
+    #endif
 #endif
 
 namespace uICAL {
@@ -70,7 +72,9 @@ namespace uICAL {
                 string() : std::string() {}
                 string(const std::string& b) : std::string(b) {}
                 string(const char* st) : std::string(st) {}
+                #ifndef UICAL_NO_STL_IO
                 string(const std::ostringstream& sst) : std::string(sst.str()) {}
+                #endif
                 string(const string&) = default;
 
                 string& operator = (const string& st) { std::string::operator =(st); return *this; }
